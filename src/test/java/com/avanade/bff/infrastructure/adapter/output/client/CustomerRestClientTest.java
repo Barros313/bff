@@ -62,12 +62,12 @@ class CustomerRestClientTest {
     @Test
     @DisplayName("Fetch customer by id when 404 status code then throw not found")
     void fetchCustomerById_when404Error_thenThrowNotFound() {
-        server.expect(ExpectedCount.once(), requestTo("/cliente/7"))
+        server.expect(ExpectedCount.once(), requestTo("/customer/7"))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
         assertThrows(CustomerNotFoundException.class, () -> {
-            restTemplate.getForObject("/cliente/7", Customer.class);
+            restTemplate.getForObject("/customer/7", Customer.class);
         });
 
         server.verify();
@@ -78,11 +78,11 @@ class CustomerRestClientTest {
     void fetchCustomerById_whenSuccess_thenReturnCustomer() throws JsonProcessingException {
         String responseBody = mapper.writeValueAsString(sampleCustomer);
 
-        server.expect(ExpectedCount.once(), requestTo("/cliente/6"))
+        server.expect(ExpectedCount.once(), requestTo("/customer/6"))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(responseBody, MediaType.APPLICATION_JSON));
 
-        Customer result = restTemplate.getForEntity("/cliente/6", Customer.class).getBody();
+        Customer result = restTemplate.getForEntity("/customer/6", Customer.class).getBody();
 
         assertThat(result).isEqualTo(sampleCustomer);
 
@@ -92,12 +92,12 @@ class CustomerRestClientTest {
     @Test
     @DisplayName("Fetch customer by name when 404 status code then throw not found")
     void fetchCustomerByName_when404Error_thenThrowNotFound() {
-        server.expect(ExpectedCount.once(), requestTo("/cliente/name/Maria"))
+        server.expect(ExpectedCount.once(), requestTo("/customer/name/Maria"))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
         assertThrows(CustomerNotFoundException.class, () -> {
-            restTemplate.getForObject("/cliente/name/Maria", Customer.class);
+            restTemplate.getForObject("/customer/name/Maria", Customer.class);
         });
 
         server.verify();
@@ -108,11 +108,11 @@ class CustomerRestClientTest {
     void fetchCustomerByName_whenSuccess_thenReturnCustomer() throws JsonProcessingException {
         String responseBody = mapper.writeValueAsString(sampleCustomer);
 
-        server.expect(ExpectedCount.once(), requestTo("/cliente/name/Lucas%20Silva"))
+        server.expect(ExpectedCount.once(), requestTo("/customer/name/Lucas%20Silva"))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(responseBody, MediaType.APPLICATION_JSON));
 
-        Customer result = restTemplate.getForEntity("/cliente/name/Lucas Silva", Customer.class).getBody();
+        Customer result = restTemplate.getForEntity("/customer/name/Lucas Silva", Customer.class).getBody();
 
         assertThat(result).isEqualTo(sampleCustomer);
 

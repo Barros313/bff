@@ -50,7 +50,7 @@ class CustomerControllerTest {
 
         when(customerService.getCustomerById(customer.getId())).thenReturn(customer);
 
-        this.mockMvc.perform(get("/bff/cliente/" + customer.getId()))
+        this.mockMvc.perform(get("/bff/customer/" + customer.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(customer)));
 
@@ -66,7 +66,7 @@ class CustomerControllerTest {
         when(customerService.getCustomerById(nonExistingId))
                 .thenThrow(new CustomerNotFoundException("Cliente não encontrado"));
 
-        this.mockMvc.perform(get("/bff/cliente/" + nonExistingId))
+        this.mockMvc.perform(get("/bff/customer/" + nonExistingId))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Cliente não encontrado"));
 
@@ -87,7 +87,7 @@ class CustomerControllerTest {
 
         when(customerService.getCustomerByName(customer.getName())).thenReturn(customer);
 
-        this.mockMvc.perform(get("/bff/cliente/name/" + customer.getName()))
+        this.mockMvc.perform(get("/bff/customer/name/" + customer.getName()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(customer)));
 
@@ -103,7 +103,7 @@ class CustomerControllerTest {
         when(customerService.getCustomerByName(nonExistingName))
                 .thenThrow(new CustomerNotFoundException("Cliente não encontrado"));
 
-        this.mockMvc.perform(get("/bff/cliente/name/" + nonExistingName))
+        this.mockMvc.perform(get("/bff/customer/name/" + nonExistingName))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Cliente não encontrado"));
 

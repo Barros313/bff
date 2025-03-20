@@ -23,7 +23,7 @@ public class CustomerRestClient implements CustomerClient {
     @Override
     public Customer fetchCustomerById(Long id) {
         try {
-            return restTemplate.getForObject(backendUrl + "cliente/" + id, Customer.class);
+            return restTemplate.getForObject(backendUrl + "customer/" + id, Customer.class);
         } catch (ResourceAccessException e) {
             throw new ServiceUnavailableException("Serviço indisponível");
         }
@@ -32,7 +32,7 @@ public class CustomerRestClient implements CustomerClient {
     @Override
     public Customer fetchCustomerByName(String name) {
         try {
-            return restTemplate.getForObject(backendUrl + "cliente/name/" + name, Customer.class);
+            return restTemplate.getForObject(backendUrl + "customer/name/" + name, Customer.class);
         } catch (ResourceAccessException e) {
             throw new ServiceUnavailableException("Serviço indisponível");
         }

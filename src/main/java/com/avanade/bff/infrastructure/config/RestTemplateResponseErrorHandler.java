@@ -11,6 +11,7 @@ import org.springframework.web.client.ResponseErrorHandler;
 import java.io.IOException;
 import java.net.URI;
 
+@Generated
 @Component
 public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
 

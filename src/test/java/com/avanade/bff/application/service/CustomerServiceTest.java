@@ -54,13 +54,14 @@ class CustomerServiceTest {
     void getNonExistingCustomerById() {
         final long nonExistingCustomerId = 11;
 
-        when(customerClient.fetchCustomerById(nonExistingCustomerId)).thenReturn(null);
+        when(customerClient.fetchCustomerById(nonExistingCustomerId))
+                .thenThrow(new CustomerNotFoundException("Cliente não encontrado"));
 
         Exception thrown = Assertions.assertThrows(CustomerNotFoundException.class, () -> {
            customerService.getCustomerById(nonExistingCustomerId);
         });
 
-        assertEquals("Customer not found", thrown.getMessage());
+        assertThat(thrown.getMessage()).isEqualTo("Cliente não encontrado");
 
         verify(customerClient, times(1)).fetchCustomerById(nonExistingCustomerId);
     }
@@ -90,13 +91,14 @@ class CustomerServiceTest {
     void getNonExistingCustomerByName() {
         final String nonExistingCustomerName = "Gabriel Barros";
 
-        when(customerClient.fetchCustomerByName(nonExistingCustomerName)).thenReturn(null);
+        when(customerClient.fetchCustomerByName(nonExistingCustomerName))
+                .thenThrow(new CustomerNotFoundException("Cliente não encontrado"));
 
         Exception thrown = Assertions.assertThrows(CustomerNotFoundException.class, () -> {
             customerService.getCustomerByName(nonExistingCustomerName);
         });
 
-        assertThat("Customer not found").isEqualTo(thrown.getMessage());
+        assertThat(thrown.getMessage()).isEqualTo("Cliente não encontrado");
 
         verify(customerClient, times(1)).fetchCustomerByName(nonExistingCustomerName);
     }

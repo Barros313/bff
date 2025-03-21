@@ -4,12 +4,12 @@ import com.avanade.bff.application.service.CustomerService;
 import com.avanade.bff.domain.exception.CustomerNotFoundException;
 import com.avanade.bff.domain.model.Customer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,6 +31,9 @@ class CustomerControllerTest {
     @MockitoBean
     private CustomerService customerService;
 
+    @Value(value = "${bff.customer.url}")
+    private String bffUrl;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -50,7 +53,7 @@ class CustomerControllerTest {
 
         when(customerService.getCustomerById(customer.getId())).thenReturn(customer);
 
-        this.mockMvc.perform(get("/bff/customer/" + customer.getId()))
+        this.mockMvc.perform(get(bffUrl + customer.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(customer)));
 
@@ -66,7 +69,7 @@ class CustomerControllerTest {
         when(customerService.getCustomerById(nonExistingId))
                 .thenThrow(new CustomerNotFoundException("Cliente não encontrado"));
 
-        this.mockMvc.perform(get("/bff/customer/" + nonExistingId))
+        this.mockMvc.perform(get(bffUrl + nonExistingId))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Cliente não encontrado"));
 
@@ -87,7 +90,7 @@ class CustomerControllerTest {
 
         when(customerService.getCustomerByName(customer.getName())).thenReturn(customer);
 
-        this.mockMvc.perform(get("/bff/customer/name/" + customer.getName()))
+        this.mockMvc.perform(get(bffUrl + "name/" + customer.getName()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(customer)));
 
@@ -103,7 +106,7 @@ class CustomerControllerTest {
         when(customerService.getCustomerByName(nonExistingName))
                 .thenThrow(new CustomerNotFoundException("Cliente não encontrado"));
 
-        this.mockMvc.perform(get("/bff/customer/name/" + nonExistingName))
+        this.mockMvc.perform(get(bffUrl+ "name/" + nonExistingName))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Cliente não encontrado"));
 

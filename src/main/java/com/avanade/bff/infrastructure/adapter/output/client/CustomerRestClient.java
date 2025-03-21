@@ -17,13 +17,13 @@ public class CustomerRestClient implements CustomerClient {
         this.restTemplate = restTemplate;
     }
 
-    @Value(value = "${api.springdemo.url}")
+    @Value(value = "${api.spring.demo.customer.url}")
     private String backendUrl;
 
     @Override
     public Customer fetchCustomerById(Long id) {
         try {
-            return restTemplate.getForObject(backendUrl + "customer/" + id, Customer.class);
+            return restTemplate.getForObject(backendUrl + "customers/" + id, Customer.class);
         } catch (ResourceAccessException e) {
             throw new ServiceUnavailableException("Serviço indisponível");
         }
@@ -32,7 +32,7 @@ public class CustomerRestClient implements CustomerClient {
     @Override
     public Customer fetchCustomerByName(String name) {
         try {
-            return restTemplate.getForObject(backendUrl + "customer/name/" + name, Customer.class);
+            return restTemplate.getForObject(backendUrl + "customers/name/" + name, Customer.class);
         } catch (ResourceAccessException e) {
             throw new ServiceUnavailableException("Serviço indisponível");
         }
